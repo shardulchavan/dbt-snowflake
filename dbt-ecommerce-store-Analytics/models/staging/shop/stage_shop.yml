@@ -1,0 +1,32 @@
+version: 2
+
+models:
+  - name: stage_shop_orders
+    description: Staged order data from shop app
+    columns:
+      - name: order_id
+        description: primary key for orders
+        tests:
+          - unique
+          - not_null
+      - name: status
+        description: '{{doc("order_status")}}'
+        tests:
+          - accepted_values:
+              values: ["returned","completed", "return_pending","shipped", "placed"]
+      - name: customer_id
+        tests:
+          - relationships:
+              field: customer_id
+              to: ref('stage_shop_customer')
+
+  - name: stage_shop_customer
+    description: Staged customer data from shop app
+    columns:
+      - name: customer_id
+        description: primary key for customers
+        tests:
+          - unique
+          - not_null
+          
+          
